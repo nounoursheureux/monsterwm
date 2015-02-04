@@ -98,6 +98,7 @@ static void rotate_filled(const Arg *arg);
 static void spawn(const Arg *arg);
 static void swap_master();
 static void switch_mode(const Arg *arg);
+static void togglefullscreen();
 static void togglepanel();
 static void unmap_window();
 
@@ -753,7 +754,7 @@ void map_window(){
             return;
         }
     }
-};
+}
 
 /**
  * handle resize and positioning of a window with the pointer.
@@ -1033,6 +1034,7 @@ void setfullscreen(Client *c, Desktop *d, Bool fullscrn) {
     XSetWindowBorderWidth(dis, c->win, (c->isfull || !d->head->next ? 0:BORDER_WIDTH));
 }
 
+
 /**
  * set initial values
  */
@@ -1210,6 +1212,12 @@ void tile(Desktop *d) {
     if (!d->head || d->mode == FLOAT) return; /* nothing to arange */
     layout[d->head->next ? d->mode:MONOCLE](0, TOP_PANEL && d->sbar ? PANEL_HEIGHT:0,
                                                   ww, wh + (d->sbar ? 0:PANEL_HEIGHT), d);
+}
+
+void togglefullscreen()
+{
+    setfullscreen(desktops[currdeskidx].curr,&desktops[currdeskidx],!desktops[currdeskidx].curr->isfull);
+    if(!desktops[currdeskidx].curr->isfull) tile(&desktops[currdeskidx]);
 }
 
 /**
