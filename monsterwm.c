@@ -85,6 +85,7 @@ static void killclient();
 static void last_desktop();
 static void map_window();
 static void move_down();
+static void movemouse(const Arg* arg);
 static void move_up();
 static void moveresize(const Arg *arg);
 static void mousemotion(const Arg *arg);
@@ -847,6 +848,10 @@ void move_down(void) {
      */
     if (d->curr->next == n->next) n->next = d->curr; else d->head = d->curr;
     if (!d->curr->isfloat && !d->curr->istrans) tile(d);
+}
+
+void movemouse(const Arg* arg) {
+    XWarpPointer(dis,None,None,0,0,0,0,((int*)arg->v)[0],((int*)arg->v)[1]);
 }
 
 /**
